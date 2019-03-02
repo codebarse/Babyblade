@@ -283,11 +283,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 437990314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d4736b15cae44a02b70d399a4418327, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c12bbf329450480ea7e0235460d989d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 437990320}
-  velocity: 1
+  movementSpeed: 1000
+  angularVelocity: 1000
+  controls: 0
 --- !u!54 &437990320
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -508,10 +510,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1251300768}
-  transform: {fileID: 1251300767}
-  movementSpeed: 1
-  forceMode: 0
-  maxSpeed: 1
+  movementSpeed: 1000
+  angularVelocity: 1000
+  controls: 1
 --- !u!1 &1797061175
 GameObject:
   m_ObjectHideFlags: 0
