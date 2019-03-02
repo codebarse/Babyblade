@@ -32,9 +32,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         Quaternion deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
+        /* No amount of angular velocity could generate enough force to keep the blade stable while spinning. 
+         * So used this to keep the blade stable.
+        */      
         rb.freezeRotation = true;
 
         if (Input.GetKey(ks.LEFT))
