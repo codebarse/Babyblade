@@ -19,6 +19,8 @@ public class Controls
             ks.RIGHT = KeyCode.RightArrow;
             ks.UP = KeyCode.UpArrow;
             ks.DOWN = KeyCode.DownArrow;
+            ks.JUMP = KeyCode.Space;
+            ks.ATTACK = KeyCode.M;
         }
 
         else if (kn.Equals(KeysetName.WASD))
@@ -27,6 +29,8 @@ public class Controls
             ks.RIGHT = KeyCode.D;
             ks.UP = KeyCode.W;
             ks.DOWN = KeyCode.S;
+            ks.JUMP = KeyCode.R;
+            ks.ATTACK = KeyCode.E;
         }
         return ks;
     }
