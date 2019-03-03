@@ -352,7 +352,6 @@
 /Users/avantika/unityGames/Babyblade/Temp/bin/Debug/Unity.Analytics.Tracker.dll.mdb
 /Users/avantika/unityGames/Babyblade/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
 /Users/avantika/unityGames/Babyblade/Temp/bin/Debug/Unity.IvyParser.dll.mdb
-/Users/avantika/unityGames/Babyblade/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache
 /Users/avantika/unityGames/Babyblade/obj/Debug/Assembly-CSharp.csproj.CoreCompileInputs.cache
 /Users/avantika/unityGames/Babyblade/obj/Debug/Assembly-CSharp.csproj.CopyComplete
 /Users/avantika/unityGames/Babyblade/obj/Debug/Assembly-CSharp.dll
