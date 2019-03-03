@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public int mass;
     private ForceMode forceMode = ForceMode.Acceleration;
     public bool inMiddleOfJump;
-    public int jumpSpeed = 2;
+    public float jumpSpeed = 1/100;
     public float jumpGravity = 35.0f;
     public float normalGravity = 9.8f;
     public bool inMiddleOfAttack;
@@ -39,8 +39,6 @@ public class Player : MonoBehaviour
         else if (rotationAxis.Equals(axis.z)) rotationVector = Vector3.forward;
         rb.mass = mass;
 
-        Physics.gravity = new Vector3(1,-9.8F, 1);
-
         /* No amount of angular velocity could generate enough force to keep the blade stable while spinning. 
          * So used this to keep the blade stable.
         */
@@ -49,15 +47,19 @@ public class Player : MonoBehaviour
         initRotation = transform.rotation;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+
+    public void OnCollisionEnter(Collision collision)
     {
-        if (rb.position.y < 1.5 && rb.position.y > 1.1)
+        if (collision.gameObject.name.Equals("Pottery_Bowl_Mesh"))
         {
+            Debug.Log("Jump woho");
             Physics.gravity = new Vector3(0, -normalGravity, 0);
             inMiddleOfJump = false;
         }
+    }
 
+    void FixedUpdate()
+    {
         Quaternion deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
@@ -104,37 +106,35 @@ public class Player : MonoBehaviour
         if (Input.GetKey(ks.LEFT))
         {
             rb.AddForce(Vector3.back * movementSpeed * Time.deltaTime, forceMode);
-            inMiddleOfAttack = false;
+            //inMiddleOfAttack = false;
             //transform.rotation = initRotation;
         }
-        else if (Input.GetKey(ks.RIGHT))
+        if (Input.GetKey(ks.RIGHT))
         {
             rb.AddForce(Vector3.forward * movementSpeed * Time.deltaTime, forceMode);
-            inMiddleOfAttack = false;
+            //inMiddleOfAttack = false;
             //transform.rotation = initRotation;
         }
-        else if (Input.GetKey(ks.UP))
+        if (Input.GetKey(ks.UP))
         {
-
             rb.AddForce(Vector3.left * movementSpeed * Time.deltaTime, forceMode);
-
-            inMiddleOfAttack = false;
+            //inMiddleOfAttack = false;
             //transform.rotation = initRotation;
         }
         if (Input.GetKey(ks.DOWN))
         {
-
             rb.AddForce(Vector3.right * movementSpeed * Time.deltaTime, forceMode);
-            inMiddleOfAttack = false;
+            //inMiddleOfAttack = false;
             //transform.rotation = initRotation;
         }
-        else if (Input.GetKey(ks.JUMP))
+        if (Input.GetKey(ks.JUMP))
         {
             if(!inMiddleOfJump)
             {
+                Debug.Log("Pressed Jump");
                 inMiddleOfJump = true;
                 Physics.gravity = new Vector3(0, -jumpGravity, 0);
-                rb.AddForce(Vector3.up * jumpSpeed * movementSpeed * Time.deltaTime, ForceMode.Acceleration);
+                rb.AddForce(new Vector3(0,500,0));
             }
         }
     }
