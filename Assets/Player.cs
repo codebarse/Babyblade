@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public int mass;
     private ForceMode forceMode = ForceMode.Acceleration;
     public bool inMiddleOfJump;
-    public float jumpSpeed = 1/100;
+    public int jumpSpeed = 500;
     public float jumpGravity = 35.0f;
     public float normalGravity = 9.8f;
     public bool inMiddleOfAttack;
@@ -43,17 +43,17 @@ public class Player : MonoBehaviour
          * So used this to keep the blade stable.
         */
         rb.freezeRotation = true;
-        Physics.gravity = new Vector3(0, -normalGravity, 0);
+        Physics.gravity = Vector3.down * jumpGravity;
         initRotation = transform.rotation;
     }
 
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name.Equals("Pottery_Bowl_Mesh"))
+        //Jump is allowed only when a beyblade touches the battle arena
+        if (collision.gameObject.name.Equals(Constants.BATTLE_ARENA))
         {
-            Debug.Log("Jump woho");
-            Physics.gravity = new Vector3(0, -normalGravity, 0);
+            Physics.gravity = Vector3.down * normalGravity;
             inMiddleOfJump = false;
         }
     }
@@ -63,78 +63,29 @@ public class Player : MonoBehaviour
         Quaternion deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
-        //if (Input.GetKey(ks.ATTACK))
-        //{
-        //    if (Input.GetKey(ks.LEFT))
-        //    {
-        //        if (!inMiddleOfAttack)
-        //        {
-        //            inMiddleOfAttack = true;
-        //            rb.MoveRotation(transform.rotation * Quaternion.AngleAxis(20, Vector3.left));
-        //        }
-        //        rb.AddForce(Vector3.back * 3 * movementSpeed * Time.deltaTime, ForceMode.Acceleration);
-        //    }
-        //    else if (Input.GetKey(ks.RIGHT))
-        //    {
-        //        if (!inMiddleOfAttack)
-        //        {
-        //            inMiddleOfAttack = true;
-        //            rb.MoveRotation(transform.rotation * Quaternion.AngleAxis(20, Vector3.right));
-        //        }
-        //        rb.AddForce(Vector3.forward * 3 * movementSpeed * Time.deltaTime, ForceMode.Acceleration);
-        //    }
-        //    else if (Input.GetKey(ks.UP))
-        //    {
-        //        if (!inMiddleOfAttack)
-        //        {
-        //            inMiddleOfAttack = true;
-        //            rb.MoveRotation(transform.rotation * Quaternion.AngleAxis(20, Vector3.up));
-        //        }
-        //        rb.AddForce(Vector3.left * 3 * movementSpeed * Time.deltaTime, ForceMode.Acceleration);
-        //    }
-        //    else if (Input.GetKey(ks.DOWN))
-        //    {
-        //        if (!inMiddleOfAttack)
-        //        {
-        //            inMiddleOfAttack = true;
-        //            rb.MoveRotation(transform.rotation * Quaternion.AngleAxis(20, Vector3.down));
-        //        }
-        //        rb.AddForce(Vector3.right * 3 * movementSpeed * Time.deltaTime, ForceMode.Acceleration);
-        //    }
-
-        //}
         if (Input.GetKey(ks.LEFT))
         {
             rb.AddForce(Vector3.back * movementSpeed * Time.deltaTime, forceMode);
-            //inMiddleOfAttack = false;
-            //transform.rotation = initRotation;
         }
         if (Input.GetKey(ks.RIGHT))
         {
             rb.AddForce(Vector3.forward * movementSpeed * Time.deltaTime, forceMode);
-            //inMiddleOfAttack = false;
-            //transform.rotation = initRotation;
         }
         if (Input.GetKey(ks.UP))
         {
             rb.AddForce(Vector3.left * movementSpeed * Time.deltaTime, forceMode);
-            //inMiddleOfAttack = false;
-            //transform.rotation = initRotation;
         }
         if (Input.GetKey(ks.DOWN))
         {
             rb.AddForce(Vector3.right * movementSpeed * Time.deltaTime, forceMode);
-            //inMiddleOfAttack = false;
-            //transform.rotation = initRotation;
         }
         if (Input.GetKey(ks.JUMP))
         {
             if(!inMiddleOfJump)
             {
-                Debug.Log("Pressed Jump");
                 inMiddleOfJump = true;
-                Physics.gravity = new Vector3(0, -jumpGravity, 0);
-                rb.AddForce(new Vector3(0,500,0));
+                Physics.gravity = Vector3.down * jumpGravity;
+                rb.AddForce(Vector3.up * jumpSpeed);
             }
         }
     }
