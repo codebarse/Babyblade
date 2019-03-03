@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
 
         Physics.gravity = new Vector3(1,-9.8F, 1);
 
+        /* No amount of angular velocity could generate enough force to keep the blade stable while spinning. 
+         * So used this to keep the blade stable.
+        */
         rb.freezeRotation = true;
         Physics.gravity = new Vector3(0, -normalGravity, 0);
         initRotation = transform.rotation;
@@ -57,10 +60,6 @@ public class Player : MonoBehaviour
 
         Quaternion deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
-
-        /* No amount of angular velocity could generate enough force to keep the blade stable while spinning. 
-         * So used this to keep the blade stable.
-        */
 
         //if (Input.GetKey(ks.ATTACK))
         //{

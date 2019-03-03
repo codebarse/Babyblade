@@ -1,23 +1,28 @@
 fileFormatVersion: 2
-guid: 6fa20d912fa924d0bb2463ce0acc3890
+guid: d19b76c63b7494d268e4c014e4fb0f49
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: Beyblade
     100002: //RootNode
-    100004: Lights
-    100006: Plane
+    100004: Camera
+    100006: Lamp
+    100008: Lights
+    100010: Plane
     400000: Beyblade
     400002: //RootNode
-    400004: Lights
-    400006: Plane
+    400004: Camera
+    400006: Lamp
+    400008: Lights
+    400010: Plane
+    2000000: Camera
     2100000: BitBeast
     2100002: Patches
     2100004: Wings
     2100006: Body
     2100008: Metal
     2100010: Material
-    2100012: Material_001
+    2100012: Material.001
     2300000: Beyblade
     2300002: Lights
     2300004: Plane
@@ -27,8 +32,7 @@ ModelImporter:
     4300000: Beyblade
     4300002: Lights
     4300004: Plane
-    7400000: Default Take
-    9500000: //RootNode
+    10800000: Lamp
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -82,7 +86,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -92,7 +96,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   importAnimation: 1
-  copyAvatar: 1
+  copyAvatar: 0
   humanDescription:
     serializedVersion: 2
     human: []
@@ -108,9 +112,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 6fa20d912fa924d0bb2463ce0acc3890,
-    type: 3}
-  animationType: 2
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
