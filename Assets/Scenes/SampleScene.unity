@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44824743, g: 0.49827445, b: 0.5755826, a: 1}
+  m_IndirectSpecularColor: {r: 0.44824702, g: 0.4982742, b: 0.575582, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -267,6 +267,8 @@ MonoBehaviour:
   mass: 1
   jumpSpeed: 500
   jumpGravity: 35
+  centerPostion: {x: 0, y: 1, z: 0}
+  centerGravity: 0.5
   normalGravity: 9.8
   inMiddleOfAttack: 0
 --- !u!64 &359553421
@@ -562,6 +564,8 @@ MonoBehaviour:
   mass: 1
   jumpSpeed: 500
   jumpGravity: 35
+  centerPostion: {x: 0, y: 1, z: 0}
+  centerGravity: 0.5
   normalGravity: 9.8
   inMiddleOfAttack: 0
 --- !u!33 &2970970567629088559

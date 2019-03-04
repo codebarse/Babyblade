@@ -22,12 +22,16 @@ public class Player : MonoBehaviour
     private bool inMiddleOfJump;
     public int jumpSpeed = 500;
     public float jumpGravity = 35.0f;
+    public Vector3 centerPostion = new Vector3(0,1,0);
+    //Force by which players move towards the center. Set it to 0 to disable center gravity
+    public float centerGravity = 1;
 
     public float normalGravity = 9.8f;
     public bool inMiddleOfAttack;
     private bool rotating = false;
     Quaternion initRotation;
     Quaternion deltaRotation;
+    Quaternion bladeSpin;
 
     private float maxTilt = 15f;
     private bool holdingDown = false;
@@ -63,6 +67,8 @@ public class Player : MonoBehaviour
         dashAbility = new DashAbility();
         dashAbility.dashState = DashState.Ready;
         tilt = new Tilt(initRotation.eulerAngles.x, maxTilt);
+        //Rotating the blade every frame to keep it spinning.
+        bladeSpin = Quaternion.Euler(Vector3.forward * angularVelocity * Time.deltaTime);
     }
 
 
@@ -118,20 +124,20 @@ public class Player : MonoBehaviour
         {
             jump = true;
         }
+        //Applies center gravity, slowly moves players to the center position.
+        transform.position = Vector3.MoveTowards(transform.position, centerPostion, centerGravity * Time.deltaTime);
     }
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        //Rotating the blade every frame to keep it spinning.
-        Quaternion bladeSpin = Quaternion.Euler(Vector3.forward * angularVelocity * Time.deltaTime);
-
         //dashAbility.checkDash(rb, ks);
 
         // Default force
         Vector3 forceToAdd = Vector3.zero;
+
+        // Set the condition to !jump to disble movements while jumping;
         if (true)
         {
             if (moveLeft)
@@ -175,14 +181,12 @@ public class Player : MonoBehaviour
         {
             holdingDown = true;
         }
-
-        if (!Input.anyKey && holdingDown)
+        else if(holdingDown)
         {
             holdingDown = false;
             Quaternion newAngle = Quaternion.Euler(Vector3.right * initRotation.eulerAngles.x);
             rb.MoveRotation(newAngle);
         }
-
 
         rb.AddForce(forceToAdd, forceMode);
         rb.MoveRotation(rb.rotation * bladeSpin);
