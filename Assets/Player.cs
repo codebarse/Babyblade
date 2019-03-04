@@ -22,14 +22,24 @@ public class Player : MonoBehaviour
     private bool inMiddleOfJump;
     public int jumpSpeed = 500;
     public float jumpGravity = 35.0f;
-    private float normalGravity = 9.8f;
+
+    public float normalGravity = 9.8f;
+    public bool inMiddleOfAttack;
+    private bool rotating = false;
+    Quaternion initRotation;
+    Quaternion deltaRotation;
+
     private float maxTilt = 15f;
-    private bool inMiddleOfAttack;
     private bool holdingDown = false;
 
     private DashAbility dashAbility;
-    private Quaternion initRotation;
     private Tilt tilt;
+
+    bool moveLeft = false;
+    bool moveRight = false;
+    bool moveUp = false;
+    bool moveDown = false;
+    bool jump = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +52,7 @@ public class Player : MonoBehaviour
         else if (rotationAxis.Equals(axis.y)) rotationVector = Vector3.up;
         else if (rotationAxis.Equals(axis.z)) rotationVector = Vector3.forward;
         rb.mass = mass;
+        //deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
 
         /* No amount of angular velocity could generate enough force to keep the blade stable while spinning. 
          * So used this to keep the blade stable.
@@ -62,59 +73,104 @@ public class Player : MonoBehaviour
         {
             Physics.gravity = Vector3.down * normalGravity;
             inMiddleOfJump = false;
+            jump = false;
         }
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        //Rotating the blade every frame to keep it spinning.
-        Quaternion deltaRotation = Quaternion.Euler(rotationVector * angularVelocity * Time.deltaTime);
-        rb.MoveRotation(rb.rotation * deltaRotation);
-
-        //dashAbility.checkDash(rb, ks);
-
         if (Input.GetKey(ks.LEFT))
         {
-            rb.AddForce(Vector3.back * movementSpeed * Time.deltaTime, forceMode);
-            Quaternion newAngle = tilt.getTilt(rb);
-            //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
-            rb.MoveRotation(newAngle);
-                    
+            moveLeft = true;
+        }
+        else
+        {
+            moveLeft = false;
         }
         if (Input.GetKey(ks.RIGHT))
         {
-            rb.AddForce(Vector3.forward * movementSpeed * Time.deltaTime, forceMode);
-
-            Quaternion newAngle = tilt.getTilt(rb);
-            //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
-            rb.MoveRotation(newAngle);
-
+            moveRight = true;
         }
+        else
+        {
+            moveRight = false;
+        }
+
         if (Input.GetKey(ks.UP))
         {
-            rb.AddForce(Vector3.left * movementSpeed * Time.deltaTime, forceMode);
-
-            Quaternion newAngle = tilt.getTilt(rb);
-            //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
-            rb.MoveRotation(newAngle);
+            moveUp = true;
         }
+        else
+        {
+            moveUp = false;
+        }
+
         if (Input.GetKey(ks.DOWN))
         {
-            rb.AddForce(Vector3.right * movementSpeed * Time.deltaTime, forceMode);
-
-            Quaternion newAngle = tilt.getTilt(rb);
-            //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
-            rb.MoveRotation(newAngle);
+              
+            moveDown = true;
+        }
+        else
+        {
+            moveDown = false;
         }
         if (Input.GetKey(ks.JUMP))
         {
-            if(!inMiddleOfJump)
+            jump = true;
+        }
+    }
+
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+
+        //Rotating the blade every frame to keep it spinning.
+        Quaternion bladeSpin = Quaternion.Euler(Vector3.forward * angularVelocity * Time.deltaTime);
+
+        //dashAbility.checkDash(rb, ks);
+
+        // Default force
+        Vector3 forceToAdd = Vector3.zero;
+        if (true)
+        {
+            if (moveLeft)
             {
-                inMiddleOfJump = true;
-                Physics.gravity = Vector3.down * jumpGravity;
-                rb.AddForce(Vector3.up * jumpSpeed);
+                forceToAdd += Vector3.back * movementSpeed * Time.deltaTime;         
+                Quaternion newAngle = tilt.getTilt(rb);
+                //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
+                rb.MoveRotation(newAngle);
+            }
+            if (moveRight)
+            {              
+                forceToAdd += Vector3.forward * movementSpeed * Time.deltaTime;
+                Quaternion newAngle = tilt.getTilt(rb);
+                //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
+                rb.MoveRotation(newAngle);
+            }
+            if (moveUp)
+            {
+                forceToAdd += Vector3.left * movementSpeed * Time.deltaTime;
+                Quaternion newAngle = tilt.getTilt(rb);
+                //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
+                rb.MoveRotation(newAngle);
+            }
+            if (moveDown)
+            {
+                forceToAdd += Vector3.right * movementSpeed * Time.deltaTime;
+                Quaternion newAngle = tilt.getTilt(rb);
+                //Debug.Log(newAngle.eulerAngles.x + "," + newAngle.eulerAngles.y + "," + newAngle.eulerAngles.z);
+                rb.MoveRotation(newAngle);
             }
         }
+
+        if (jump && !inMiddleOfJump)
+        {
+            inMiddleOfJump = true;
+            Physics.gravity = Vector3.down * jumpGravity;
+            rb.AddForce(Vector3.up * jumpSpeed);        
+        }
+
         if (Input.anyKey)
         {
             holdingDown = true;
@@ -126,5 +182,9 @@ public class Player : MonoBehaviour
             Quaternion newAngle = Quaternion.Euler(Vector3.right * initRotation.eulerAngles.x);
             rb.MoveRotation(newAngle);
         }
+
+
+        rb.AddForce(forceToAdd, forceMode);
+        rb.MoveRotation(rb.rotation * bladeSpin);
     }
 }
